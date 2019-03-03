@@ -3,7 +3,7 @@
  */
 
  var mysql = require("mysql");
- const MYSQL_ENV = { host: 'mysql.sql122.cdncenter.net', port: 3306, user: 'sq_Fijon', password: 'Fijon920630', database: 'sq_Fijon' };
+ const MYSQL_ENV = { host: 'mysql.sql122.cdncenter.net', port: 3306, user: 'sq_Fijon', password: '*******', database: 'sq_Fijon' };
  var pool = mysql.createPool(MYSQL_ENV);
 
  let query = function(sql, values){
