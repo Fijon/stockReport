@@ -1,6 +1,6 @@
 var db = require('mysql');
 var str_format = require('string.format');
-const MYSQL_ENV = { host: 'mysql.sql122.cdncenter.net', port: 3306, user: 'sq_Fijon', password: 'Fijon920630', database: 'sq_Fijon' }
+const MYSQL_ENV = { host: 'mysql.sql122.cdncenter.net', port: 3306, user: 'sq_Fijon', password: '*******', database: 'sq_Fijon' }
 
 
 var connection;
