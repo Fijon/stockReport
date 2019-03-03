@@ -1,0 +1,3 @@
+class BasePage {
+    constructor()
+}
