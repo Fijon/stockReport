@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>回购信息查询</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/vue/2.5.22/vue.min.js"></script>
+</head>
+
+<body style='margin-top: 50px'>
+
+    <div id="app" class="container">
+        <h3 style='margin-bottom: 20px'>回购信息查询</h3>
+        <label for="code" style="float:left">股票代码：</label>
+        <div class=" col-xs-3  form-inline ">
+            <input type="text" id="code" placeholder="0001" v-model='code' />
+            <button @click="queryStock" class='form-inline'>搜索</button>
+        </div>
+        <!-- <div class="form-group">
+            <label for="simpleName">股票简写： </label>
+            <input type="text" class="form-control" id="simpleName" placeholder="股票简写" v-model='simpleName' />
+        </div> -->
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>股票代码</th>
+                    <th>公司名称</th>
+                    <th>股票简称</th>
+                    <th>买入最高价</th>
+                    <th>买入最低价</th>
+                    <th>交易总额</th>
+                    <th>交易日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="tmp in reports.data">
+                    <td>{{ tmp.code }}</td>
+                    <td>{{ tmp.name }}</td>
+                    <td>{{ tmp.company }}</td>
+                    <td>{{ tmp.price }}</td>
+                    <td>{{ tmp.lowestPrice }}</td>
+                    <td>{{ tmp.totalPaid }}</td>
+                    <td>{{ tmp.tradingDate }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li v-if="reports.cur==1" class="disabled"><a href="#" aria-label="Previous"><span
+                            aria-hidden="true">上一页</span></a></li>
+                <li v-if="reports.cur>1"><a href="#" aria-label="Previous" v-on:click="cur--,pageClick()">上一页</a></li>
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">{{reports.cur}}</span></a></li>
+                <li v-if="reports.cur == reports.pageAmount" class="disabled"><a href="#" aria-label="Previous"><span
+                            aria-hidden="true">下一页</span></a></li>
+                <li v-if="reports.cur<reports.pageAmount"><a href="#" aria-label="next" v-on:click="cur++,pageClick()">下一页</a></li>
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">共 {{reports.pageAmount}}
+                            页，{{reports.allCount}}
+                            条记录</span></a></li> 
+            </ul>
+        </nav>
+    </div>
+
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="resource/third/bootstrap/js/bootstrap.min.js"></script>
+</body>
+<script>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            code: null,
+            simpleName: null,
+            data: null,
+            //reports: null,
+            cur: 1,             //当前页数
+            pageSize: 10,    // 每页数量
+            pageAmount: 10,         //总页数
+            reports: {
+                data: {},
+                cur: 1,             //当前页数
+                pageSize: 10,    // 每页数量
+                pageAmount: 10,
+                allCount: 0
+            }        //总页数}
+        },
+        created: function () {
+            var _self = this;
+            axios.get('query.json', {
+                params: { code: this.code, name: this.name }
+            }).then(function (response) {
+                console.log(response.data);
+                _self.reports = response.data;
+
+            }).catch(function (err) {
+                console.log('请求失败:' + err.status + ',' + err.statusText);
+                alert('请求失败:' + err.status + ',' + err.statusText);
+            });
+        },
+        methods: {
+            queryStock: function () {
+                var _self = this;
+                url = 'query.json?code=' + this.code;
+                axios.get('query.json', {
+                    params: { code: this.code, name: this.name }
+                }).then(function (response) {
+                    console.log(response.data);
+                    _self.reports = response.data;
+                }).catch(function (err) {
+                    console.log('请求失败:' + err.status + ',' + err.statusText);
+                    alert('请求失败:' + err.status + ',' + err.statusText);
+                });
+            },
+            pageClick: function () {
+                var _self = this;
+                url = 'query.json?code=' + this.code;
+                console.log(_self.cur);
+                param = { code: _self.code, name: _self.name, page: _self.cur, pageSize: _self.pageSize };
+                console.log(param);
+                axios.get('query.json', {
+                    params: param
+                }).then(function (response) {
+                    console.log(response.data);
+                    _self.reports = response.data;
+                }).catch(function (err) {
+                    console.log('请求失败:' + err.status + ',' + err.statusText);
+                    alert('请求失败:' + err.status + ',' + err.statusText);
+                });
+            }
+        }
+    });
+</script>
+
+</html>

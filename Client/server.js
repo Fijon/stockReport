@@ -32,6 +32,7 @@ function start(route, handle) {
                 param = req_obj.search.slice(1, req_obj.search.length).split('&');
             }
             response.writeHead(200, { "Content-Type": "text/json" });
+            console.log("query with param: " + param)
             requestHandler.queryReport(response, postData, param)
         }
         else {

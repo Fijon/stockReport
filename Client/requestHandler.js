@@ -3,7 +3,8 @@
  */
 var fs = require('fs');
 var db = require('./dbpool.js');
-var myUtils = require('./utils')
+var myUtils = require('./utils');
+var result = require("./domain/Base.class");
 
 /**
  * 错误请求的处理方法
@@ -37,7 +38,8 @@ function readStatic(res, data, url_path) {
 
     fs.readFile(url_path, 'utf-8', function (err, data) {
         if (err) {
-            console.log('error.....');
+            console.log('error.....' + data);
+            console.log(err)
             res.end();
         } else {
             console.log("read url_path, " + url_path)
@@ -48,12 +50,8 @@ function readStatic(res, data, url_path) {
     });
 }
 
-
-
-
-
 /**
- * 读取购物信息
+ * 读取回购信息
  * @param {*} res 
  * @param {*} data 
  * @param {*} param 
@@ -81,15 +79,30 @@ async function queryBuyReport(res, data, param) {
         }
         else {
             console.error('param could not be : ' + tmp_array[0] + ', value: ' + tmp_array[1]);
-            //error_Req(res, 'error_param', '不支持该参数查询');
         }
     }
     query_dto.pageSize = pageSize
     query_dto.startRow = (page - 1) * pageSize
+    query_dto.page = page
+    console.log(query_dto)
     if (myUtils.isEmptyObject(query_dto.code)) {
-        sql_str = 'select * from Repurchase order by tradingDate desc limit ?, ?'
-        result = await db.query(sql_str, [query_dto.startRow, query_dto.pageSize])
-        res.end(JSON.stringify(result));
+        let sql_str = 'select * from Repurchase order by tradingDate desc limit ?, ?'
+        let result = await db.query(sql_str, [query_dto.startRow, query_dto.pageSize])
+        let sql_count = 'select count(*) as allCount from Repurchase order by tradingDate desc '
+        let result_count = await db.query(sql_count, [query_dto.startRow, query_dto.pageSize]) 
+        console.log(JSON.stringify(result_count));
+        console.log(JSON.stringify(result))
+        const pageResult = {}; 
+        pageResult.pageSize = query_dto.pageSize
+        pageResult.allPage =  result_count[0].allCount / pageSize
+        pageResult.allCount = result_count[0].allCount
+        pageResult.nowPage = page
+        pageResult.data = JSON.parse(JSON.stringify(result))
+        pageResult.code = 0
+        pageResult.msg = "success"
+        console.log(pageResult)
+        //res.end(JSON.stringify(pageResult));
+        generateResult(query_dto, result,result_count[0].allCount, res)
     } else {
         try {
             if (page == 0) {
@@ -97,20 +110,42 @@ async function queryBuyReport(res, data, param) {
             }
             query_dto.startRow = (page - 1) * pageSize;
             query_dto.pageSize = pageSize;
-            sql_str = 'select * from Repurchase where code=? order by tradingDate desc limit ?, ?'
-            result = await db.query(sql_str, [query_dto.code, query_dto.startRow, query_dto.pageSize])
-            res.end(JSON.stringify(result));
+            
+            let sql_str = 'select * from Repurchase where code=? order by tradingDate desc limit ?, ?'
+            let result = await db.query(sql_str, [query_dto.code, query_dto.startRow, query_dto.pageSize])
+            let sql_count = 'select count(*) as allCount from Repurchase where code=?'
+            let result_count = await db.query(sql_str, [query_dto.code])
+            
+            console.log(JSON.stringify(result))
+            //res.end(JSON.stringify(result));
+            generateResult(query_dto, result,result_count[0].allCount, res)
         } catch (error) {
             console.error('query db has error');
             console.log(error);
             error_Req(res, 'error_query_db', '查询数据库异常')
         }
     }
-
-
 }
 
-
+/**
+ * 将数据生成翻页数据返回
+ * @param {*} pageSize 
+ * @param {*} page 
+ * @param {*} result 
+ * @param {*} resultCount 
+ * @param {*} response 
+ */
+function generateResult(query_dto, result, resultCount, response){
+    const pageResult = {}; 
+    pageResult.pageSize = query_dto.pageSize
+    pageResult.allCount = resultCount
+    pageResult.pageAmount =   Math.ceil(resultCount / query_dto.pageSize)
+    pageResult.cur = query_dto.page
+    pageResult.data = JSON.parse(JSON.stringify(result))
+    pageResult.code = 0
+    pageResult.msg = "success"
+    response.end(JSON.stringify(pageResult))
+}
 
 function one(response, data) {
     var body = '<html>' +
