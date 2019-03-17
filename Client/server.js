@@ -9,10 +9,14 @@ function start(route, handle) {
         req_obj = url.parse(request.url);
         var pathname = req_obj.pathname;
         var postData = '';
-        if (pathname.endsWith('js')) {
+        console.log("path: " + pathname)
+        if(pathname === '/'){
+            pathname = 'resource/html/index.html' ;
+            response.writeHead(200, { "Content-Type": "text/html" });
+            requestHandler.readStatic(response, postData, pathname);
+        }else if (pathname.endsWith('js')) {
             pathname = pathname.slice(1, pathname.length)
             response.writeHead(200, { "Content-Type": "text/js" });
-
             requestHandler.readStatic(response, postData, pathname);
         } else if (pathname.endsWith('css')) {
             pathname = pathname.slice(1, pathname.length)

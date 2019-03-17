@@ -38,7 +38,7 @@ function readStatic(res, data, url_path) {
 
     fs.readFile(url_path, 'utf-8', function (err, data) {
         if (err) {
-            console.log('error.....' + data);
+            console.log('error.....');
             console.log(err)
             res.end();
         } else {
@@ -89,19 +89,7 @@ async function queryBuyReport(res, data, param) {
         let sql_str = 'select * from Repurchase order by tradingDate desc limit ?, ?'
         let result = await db.query(sql_str, [query_dto.startRow, query_dto.pageSize])
         let sql_count = 'select count(*) as allCount from Repurchase order by tradingDate desc '
-        let result_count = await db.query(sql_count, [query_dto.startRow, query_dto.pageSize]) 
-        console.log(JSON.stringify(result_count));
-        console.log(JSON.stringify(result))
-        const pageResult = {}; 
-        pageResult.pageSize = query_dto.pageSize
-        pageResult.allPage =  result_count[0].allCount / pageSize
-        pageResult.allCount = result_count[0].allCount
-        pageResult.nowPage = page
-        pageResult.data = JSON.parse(JSON.stringify(result))
-        pageResult.code = 0
-        pageResult.msg = "success"
-        console.log(pageResult)
-        //res.end(JSON.stringify(pageResult));
+        let result_count = await db.query(sql_count, [query_dto.startRow, query_dto.pageSize])   
         generateResult(query_dto, result,result_count[0].allCount, res)
     } else {
         try {
@@ -115,9 +103,6 @@ async function queryBuyReport(res, data, param) {
             let result = await db.query(sql_str, [query_dto.code, query_dto.startRow, query_dto.pageSize])
             let sql_count = 'select count(*) as allCount from Repurchase where code=?'
             let result_count = await db.query(sql_str, [query_dto.code])
-            
-            console.log(JSON.stringify(result))
-            //res.end(JSON.stringify(result));
             generateResult(query_dto, result,result_count[0].allCount, res)
         } catch (error) {
             console.error('query db has error');
@@ -146,38 +131,5 @@ function generateResult(query_dto, result, resultCount, response){
     pageResult.msg = "success"
     response.end(JSON.stringify(pageResult))
 }
-
-function one(response, data) {
-    var body = '<html>' +
-        '<head>' +
-        '<meta charset="UTF-8"/>' +
-        '<meta http-equiv-"Content-Type" content="text/html;charset=UTF-8"/>' +
-        '</head>' +
-        '<body>' +
-        '<a href="/two">two</a>' +
-        '</body>' +
-        '</html>';
-
-    response.writeHead(200, { "Content-Type": "text/html;charset=utf-8" });
-    //当Content-Type为"text/plain"时，返回的内容将直接显示
-    response.write(body);
-    response.end();
-}
-function two(response, data) {
-    var body = '<html>' +
-        '<head>' +
-        '<meta http-equiv-"Content-Type" content="text/html;charset=UTF-8"/>' +
-        '</head>' +
-        '<body>' +
-        '<a href="/one">one</a>' +
-        '</body>' +
-        '</html>';
-
-    response.writeHead(200, { "Content-Type": "text/html" });
-    response.write(body);
-    response.end();
-}
 exports.readStatic = readStatic;
 exports.queryReport = queryBuyReport;
-exports.one = one;
-exports.two = two;
