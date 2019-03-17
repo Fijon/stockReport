@@ -1,5 +1,5 @@
 const mysql = require('mysql')
-const MYSQL_ENV = { host: 'mysql.sql122.cdncenter.net', port: 3306, user: 'sq_Fijon', password: 'Fijon920630', database: 'sq_Fijon' }
+const MYSQL_ENV = { host: 'mysql.sql122.cdncenter.net', port: 3306, user: 'sq_Fijon', password: '******', database: 'sq_Fijon' }
 const pool = mysql.createPool(MYSQL_ENV)
 
 // 接收一个sql语句 以及所需的values
