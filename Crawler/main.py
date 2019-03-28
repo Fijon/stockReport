@@ -66,7 +66,7 @@ class DownloadReport():
         print('path_pre: %s, name: %s' % (self.path, url_array[len(url_array) - 1 ]))
         try:
             request.urlretrieve(url, file_name)
-            print("save path: %s" % file_name);
+            print("save path: %s" % file_name)
         except:
             self.error_list.append(url)
 
