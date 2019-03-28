@@ -3,7 +3,7 @@ import pymysql
 DB_HOST = '47.106.110.50'
 DB_PORT = 14000
 DB_USER='Fijon'
-DB_PWD = 'sql_FIJON_920630'
+DB_PWD = ''
 DB_DB = 'stock' 
 
 class SQLOperation():
