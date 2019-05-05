@@ -1,8 +1,21 @@
 @startuml
-actor Alice
-actor Bob
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+boundary main
+boundary config
+database company
+database xq_kline_qfq
+database xq_kline_hfq
+main --> config : 1.1 read db config
+activate config
+config --> main : 1.2 return config
+deactivate config
+main --> company : 2.1 read list of company
+activate company
+company -->main : 2.2  return data
+deactivate company
 @enduml
+
+@startuml
+系统 -> (读取数据库)
+User --> (Use the application) : A small label
+@enduml
+
