@@ -119,8 +119,8 @@ def init_data():
     print(len(result))
     for code in result:
         print(code[0])
-        line_year(str(code[0]))
-        time.sleep(1)
+        #line_year(str(code[0]))
+        #time.sleep(1)
     
 if __name__ == '__main__':
     init_data()

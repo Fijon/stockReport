@@ -4,3 +4,4 @@ package.json
 log/
 *.pyc
 *.json
+config/*.ini

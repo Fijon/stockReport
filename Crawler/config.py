@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 # 收集到的常用Header
+import configparser
 my_headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
     "Accept-Encoding": "gzip, deflate, br",
@@ -10,3 +13,15 @@ my_headers = {
     "Upgrade-Insecure-Requests": "1",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36"
 }
+
+def get_config(config_path):
+    config = configparser.ConfigParser()
+    config.read(config_path, encoding="utf-8")
+    db_host = config.get('DB', 'DB_HOST')
+    print(db_host)
+
+
+    
+if __name__ == '__main__':
+    config_path = './config/crawler.ini'
+    get_config(config_path)
