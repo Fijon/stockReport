@@ -8,7 +8,7 @@ my_headers = {
     "Accept-Language": "zh-CN,zh;q=0.9",
     "Cache-Control": "max-age=0",
     "Connection": "keep-alive",
-    "Cookie": "_ga=GA1.2.1846631486.1552315415; device_id=5cad983f8c11ac55ac642b1b22221418; s=dv12689hpk; xq_a_token=32c802a4240da641d66417001a2db2647ff13a9b; xqat=32c802a4240da641d66417001a2db2647ff13a9b; xq_r_token=6e94c79e2514bee7285c4793e0b85ad7571e1a3e; xq_token_expire=Fri%20Apr%2005%202019%2022%3A43%3A56%20GMT%2B0800%20(CST); xq_is_login=1; u=1917053402; bid=a54590804348668b7dc490d782c81d30_jt4gq6po; _gid=GA1.2.310396720.1552999987; Hm_lvt_1db88642e346389874251b5a1eded6e3=1552315416,1552814978,1552999986,1553085918; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1553085925",
+    "Cookie": "xq_a_token=d729f0d1dafe5a6fa97a4479a398bee96ad40daf; xq_a_token.sig=E_oWkIRXLzY9jShEop_cL1Cho-4; xq_r_token=82de8adc358f46d286f033ff8a0403310e56c969; xq_r_token.sig=pWkiZQ7anInrwuRDKG7nXTznEb8; _ga=GA1.2.1290549653.1557243827; _gid=GA1.2.649192837.1557243827; u=171557243826953; Hm_lvt_1db88642e346389874251b5a1eded6e3=1557243828; device_id=89a37967431e6d79cede658aef7a504d; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1557243840",
     "Host": "stock.xueqiu.com",
     "Upgrade-Insecure-Requests": "1",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36"

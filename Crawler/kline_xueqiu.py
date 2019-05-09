@@ -37,11 +37,12 @@ def line_year(code):
     https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=00001&begin=1553174544463&period=year&type=after&count=-29&indicator=kline,ma,macd,kdj,boll,rsi,wr,bias,cci,psy,pe,pb,ps,pcf,market_capital,agt,ggt,balance
     """
 
-    url_before = "https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=%s&begin=%d&period=day&type=before&count=-15&indicator=kline,ma,macd,kdj,boll,rsi,wr,bias,cci,psy,pe,pb,ps,pcf,market_capital,agt,ggt,balance" % (code, now)
-    #url_after = "https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=%s&begin=1553174544463&period=day&type=after&count=-1500&indicator=kline,ma,macd,kdj,boll,rsi,wr,bias,cci,psy,pe,pb,ps,pcf,market_capital,agt,ggt,balance" % code
+    url_before = "http://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=%s&begin=%d&period=day&type=before&count=-15&indicator=kline,ma,macd,kdj,boll,rsi,wr,bias,cci,psy,pe,pb,ps,pcf,market_capital,agt,ggt,balance" % (code, now)
+    url_after = "http://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=%s&begin=%d&period=day&type=after&count=-1500&indicator=kline,ma,macd,kdj,boll,rsi,wr,bias,cci,psy,pe,pb,ps,pcf,market_capital,agt,ggt,balance" % (code, now)
     value_before = interview(url_before)
-    #value_after = interview(url_after)
+    value_after = interview(url_after)
     logger.info(value_before)
+    done_db(code, value_before, value_after)
 
 
 def done_db(code, value_before, value_after):    
@@ -119,8 +120,9 @@ def init_data():
     print(len(result))
     for code in result:
         print(code[0])
-        #line_year(str(code[0]))
+        line_year(str(code[0]))
         #time.sleep(1)
     
 if __name__ == '__main__':
+    logger.info("begin")
     init_data()
